@@ -1,0 +1,117 @@
+Table Users {
+  user_id int [pk, increment]
+  name varchar(100)
+  email varchar(100) [unique]
+  password varchar(255)
+  phone varchar(15)
+  role varchar(20) // ADMIN, CUSTOMER, TAILOR
+  status boolean
+  created_at datetime
+}
+
+Table Customers {
+  customer_id int [pk, increment]
+  user_id int [not null, unique]
+  address varchar(255)
+  date_of_birth date
+  created_at datetime
+}
+
+Table Tailors {
+  tailor_id int [pk, increment]
+  user_id int [not null, unique]
+  specialization varchar(100)
+  experience int
+  status boolean
+  created_at datetime
+}
+
+Table Clothing_Designs {
+  design_id int [pk, increment]
+  name varchar(100)
+  category varchar(100)
+  description text
+  image_url varchar(255)
+  base_price decimal(10,2)
+  status boolean
+  created_at datetime
+}
+
+Table Measurements {
+  measurement_id int [pk, increment]
+  customer_id int [not null]
+  measurement_name varchar(100)
+  measurement_data text
+  created_at datetime
+  updated_at datetime
+}
+
+Table Orders {
+  order_id int [pk, increment]
+  customer_id int [not null]
+  tailor_id int
+  status_id int [not null]
+  order_date datetime
+  total_amount decimal(10,2)
+  expected_delivery date
+  created_at datetime
+}
+
+Table Order_Items {
+  order_item_id int [pk, increment]
+  order_id int [not null]
+  design_id int [not null]
+  quantity int
+  price decimal(10,2)
+  custom_notes text
+}
+
+Table Payments {
+  payment_id int [pk, increment]
+  order_id int [not null]
+  amount decimal(10,2)
+  payment_method varchar(50)
+  payment_status varchar(50)
+  transaction_id varchar(100)
+  payment_date datetime
+}
+
+Table Order_Status {
+  status_id int [pk, increment]
+  status_name varchar(50)
+  description text
+}
+
+Table Notifications {
+  notification_id int [pk, increment]
+  user_id int [not null]
+  order_id int
+  message text
+  is_read boolean
+  created_at datetime
+}
+
+
+// Relationships
+
+Ref: Users.user_id - Customers.user_id
+
+Ref: Users.user_id - Tailors.user_id
+
+Ref: Users.user_id < Notifications.user_id
+
+Ref: Customers.customer_id < Measurements.customer_id
+
+Ref: Customers.customer_id < Orders.customer_id
+
+Ref: Tailors.tailor_id < Orders.tailor_id
+
+Ref: Order_Status.status_id < Orders.status_id
+
+Ref: Orders.order_id < Order_Items.order_id
+
+Ref: Clothing_Designs.design_id < Order_Items.design_id
+
+Ref: Orders.order_id < Payments.order_id
+
+Ref: Orders.order_id < Notifications.order_id
