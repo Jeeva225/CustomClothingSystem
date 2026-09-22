@@ -1,6 +1,10 @@
-package com.customclothing.custom_clothing_system;
+package com.customclothing.custom_clothing_system.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "measurements")
@@ -16,7 +20,10 @@ public class Measurement {
     private double hips;
     private double shoulder;
 
-    // Getters and Setters
+    
+    public Measurement() {}
+
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
